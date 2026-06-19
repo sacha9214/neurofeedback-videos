@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Neurofeedback — Vidéos & Podcasts</title>
+<meta name="description" content="Bibliothèque de vidéos et podcasts sur le neurofeedback, classés par thématique." />
+<style>
+  :root {
+    --bg: #0a0e14;
+    --bg-soft: #111722;
+    --card: #151c28;
+    --card-hover: #1b2433;
+    --border: #232c3b;
+    --text: #e8edf4;
+    --muted: #8a97aa;
+    --accent: #5b8cff;
+    --accent-soft: rgba(91, 140, 255, 0.14);
+    --radius: 16px;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    padding: 72px 24px 48px;
+    text-align: center;
+    background:
+      radial-gradient(1200px 400px at 50% -10%, rgba(91,140,255,0.18), transparent 70%),
+      linear-gradient(180deg, #0c121c, var(--bg));
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .hero .brain { font-size: 46px; margin-bottom: 14px; }
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 46px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(180deg, #fff, #aebfdc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero p {
+    color: var(--muted);
+    max-width: 620px;
+    margin: 14px auto 0;
+    font-size: 16px;
+  }
+  .stats {
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+  .stat { text-align: center; }
+  .stat b { display: block; font-size: 26px; font-weight: 800; color: var(--text); }
+  .stat span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ---------- Layout ---------- */
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+  .filters {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 18px 0;
+    margin-top: 8px;
+    background: rgba(10, 14, 20, 0.82);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .chip {
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    color: var(--muted);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    white-space: nowrap;
+  }
+  .chip:hover { color: var(--text); border-color: #34405440; }
+  .chip.active {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: #cddbff;
+  }
+  .chip .count {
+    opacity: 0.7;
+    font-weight: 500;
+    margin-left: 4px;
+  }
+
+  /* ---------- Sections ---------- */
+  .section { padding: 40px 0 8px; }
+  .section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .section .lead { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+  .section .ico {
+    width: 34px; height: 34px;
+    display: grid; place-items: center;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    font-size: 18px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+  }
+
+  /* ---------- Card ---------- */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: #34405470;
+    box-shadow: var(--shadow);
+    background: var(--card-hover);
+  }
+  .thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, #1a2233, #0e1420);
+    overflow: hidden;
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .thumb .play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(6, 9, 14, 0.15);
+    opacity: 0;
+    transition: opacity 0.18s ease;
+  }
+  .card:hover .thumb .play { opacity: 1; }
+  .thumb .play span {
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.6);
+    border: 2px solid #fff;
+    display: grid; place-items: center;
+    color: #fff; font-size: 20px;
+    padding-left: 4px;
+  }
+  .badge {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 9px;
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+    letter-spacing: 0.02em;
+  }
+  .badge.playlist { background: rgba(91,140,255,0.85); }
+  .pl-art {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: #7e93ba; font-size: 44px;
+  }
+  .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .body .title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--text);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .body .note { font-size: 13px; color: var(--muted); flex: 1; }
+  .body .meta {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--muted);
+    margin-top: 4px;
+  }
+  .body .meta .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--muted); }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    padding: 56px 24px 40px;
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+  }
+  footer a { color: var(--accent); }
+  .hide { display: none !important; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="brain">🧠</div>
+  <h1>Neurofeedback — Vidéos &amp; Podcasts</h1>
+  <p>Une bibliothèque des vidéos, conférences, podcasts et témoignages partagés autour du neurofeedback, classés par thématique.</p>
+  <div class="stats">
+    <div class="stat"><b id="stat-total">0</b><span>ressources</span></div>
+    <div class="stat"><b id="stat-video">0</b><span>vidéos</span></div>
+    <div class="stat"><b id="stat-playlist">0</b><span>playlists</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="filters" id="filters"></nav>
+  <main id="content"></main>
+</div>
+
+<footer>
+  Bibliothèque construite à partir des partages du groupe <b>Neurofeedback Family</b>.<br />
+  Les vidéos restent hébergées sur YouTube — ce site ne fait que les organiser.
+</footer>
+
+<script>
+/* ----------------------------------------------------------------------
+   Données : chaque ressource extraite du chat WhatsApp.
+   theme = clé de thématique ; note = description issue du chat.
+---------------------------------------------------------------------- */
+const THEMES = {
+  decouverte: { label: "Découvrir", icon: "✨", title: "Découvrir le neurofeedback", lead: "Pour comprendre de quoi il s’agit et faire découvrir la pratique." },
+  conferences:{ label: "Conférences & Webinaires", icon: "🎤", title: "Conférences & Webinaires", lead: "Interventions, conférences et replays de webinaires." },
+  podcasts:   { label: "Podcasts", icon: "🎧", title: "Podcasts", lead: "Échanges audio thématiques : sommeil, bonheur, fonctionnement du cerveau." },
+  temoignages:{ label: "Témoignages", icon: "💬", title: "Témoignages", lead: "Retours et témoignages de patients sur leur expérience." },
+  playlists:  { label: "Playlists", icon: "📚", title: "Playlists complètes", lead: "Collections regroupant plusieurs vidéos." },
+};
+
+const DATA = [
+  // --- Découvrir ---
+  { type:"video", id:"HyLd46df9yU", theme:"decouverte", note:"« La vidéo préférée pour faire découvrir le neurofeedback aux personnes qui ne connaissent pas. »" },
+  { type:"video", id:"5cJWXBGXPA8", theme:"decouverte", note:"La toute première vidéo de Perrine, avant de devenir formatrice." },
+
+  // --- Conférences & Webinaires ---
+  { type:"video", id:"rCfl9svj8QE", theme:"conferences", note:"Conférence donnée en entreprise." },
+  { type:"video", id:"5CbPjkqU7XA", theme:"conferences", note:"Conférence diffusée en direct (live)." },
+
+  // --- Podcasts ---
+  { type:"video", id:"Gpi9OusUtV0", theme:"podcasts", note:"Podcast sur le bonheur, avec Julien Peron." },
+  { type:"video", id:"TwVMFPzRyu8", theme:"podcasts", note:"Podcast dédié au sommeil — chaîne « Les Impactantes » de Barbara Dellenbach." },
+  { type:"video", id:"F5m0xLvxOCk", theme:"podcasts", note:"Mini podcast : pourquoi les coupures du son font sens pour le cerveau." },
+
+  // --- Témoignages ---
+  { type:"video", id:"YCSf4NJH858", theme:"temoignages", note:"Des patients témoignent — chaîne YouTube de NeurOptimal." },
+  { type:"video", id:"vkzGhkxLSaA", theme:"temoignages", note:"Témoignage poignant d’une patiente." },
+  { type:"video", id:"LeX_dZIVrS0", theme:"temoignages", note:"Témoignage." },
+  { type:"video", id:"lcP640t69nI", theme:"temoignages", note:"Témoignage — chaîne de Jean-Philippe Dellamonica." },
+  { type:"video", id:"Zs3Wgz89LVE", theme:"temoignages", note:"Témoignage — chaîne de Jean-Philippe Dellamonica." },
+  { type:"video", id:"5lpi14e5wyk", theme:"temoignages", note:"Témoignage — chaîne de Jean-Philippe Dellamonica." },
+  { type:"video", id:"We-CWAxIFbk", theme:"temoignages", note:"Témoignage — chaîne de Jean-Philippe Dellamonica." },
+  { type:"video", id:"AlXUJdP4CTU", theme:"temoignages", note:"Témoignage — chaîne de Jean-Philippe Dellamonica." },
+  { type:"video", id:"BDeF51MjVwo", theme:"temoignages", note:"Témoignage — chaîne de Jean-Philippe Dellamonica." },
+
+  // --- Playlists ---
+  { type:"playlist", id:"PLfKOOpTKVqFZPiq-aibQox6DBjkDAARVi", theme:"playlists", note:"Replays des webinaires de la Semaine du Cerveau." },
+  { type:"playlist", id:"PLyjHSx2GW2LRaah9TMPU7Qskec2S9tPHw", theme:"playlists", note:"Playlist de vidéos neurofeedback." },
+  { type:"playlist", id:"PLmVDcyNU4LA6_qEe2a4u3Wc88_m3nwrSf", theme:"playlists", note:"Playlist de vidéos neurofeedback." },
+];
+
+/* ---------- Helpers ---------- */
+const ytWatch    = id => `https://www.youtube.com/watch?v=${id}`;
+const ytPlaylist = id => `https://www.youtube.com/playlist?list=${id}`;
+const ytThumb    = id => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+
+function fallbackTitle(item){
+  const map = { decouverte:"Vidéo découverte", conferences:"Conférence", podcasts:"Podcast", temoignages:"Témoignage", playlists:"Playlist" };
+  return map[item.theme] || "Vidéo";
+}
+
+/* Récupère le vrai titre YouTube via noembed (CORS-friendly), avec repli. */
+async function fetchTitle(item){
+  const url = item.type === "playlist" ? ytPlaylist(item.id) : ytWatch(item.id);
+  try {
+    const r = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
+    const j = await r.json();
+    if (j && j.title) return j.title;
+  } catch(e){ /* offline / blocked → repli */ }
+  return fallbackTitle(item);
+}
+
+function cardHTML(item){
+  const href = item.type === "playlist" ? ytPlaylist(item.id) : ytWatch(item.id);
+  const isPl = item.type === "playlist";
+  const thumb = isPl
+    ? `<div class="pl-art">📚</div>`
+    : `<img loading="lazy" src="${ytThumb(item.id)}" alt="" onerror="this.style.display='none'">`;
+  const badge = isPl
+    ? `<span class="badge playlist">Playlist</span>`
+    : `<span class="badge">${THEMES[item.theme].label}</span>`;
+  return `
+  <a class="card" data-theme="${item.theme}" href="${href}" target="_blank" rel="noopener">
+    <div class="thumb">
+      ${thumb}
+      ${badge}
+      <div class="play"><span>▶</span></div>
+    </div>
+    <div class="body">
+      <div class="title" data-title>${fallbackTitle(item)}</div>
+      <div class="note">${item.note}</div>
+      <div class="meta">${isPl ? "Playlist YouTube" : "Vidéo YouTube"}</div>
+    </div>
+  </a>`;
+}
+
+/* ---------- Render ---------- */
+function render(){
+  const content = document.getElementById("content");
+  const order = ["decouverte","conferences","podcasts","temoignages","playlists"];
+  let html = "";
+  order.forEach(key => {
+    const items = DATA.filter(d => d.theme === key);
+    if (!items.length) return;
+    const t = THEMES[key];
+    html += `
+    <section class="section" data-section="${key}">
+      <h2><span class="ico">${t.icon}</span>${t.title}</h2>
+      <p class="lead">${t.lead}</p>
+      <div class="grid">${items.map(cardHTML).join("")}</div>
+    </section>`;
+  });
+  content.innerHTML = html;
+
+  // Filtres
+  const counts = {};
+  DATA.forEach(d => counts[d.theme] = (counts[d.theme]||0)+1);
+  const filters = document.getElementById("filters");
+  let f = `<button class="chip active" data-filter="all">Tout<span class="count">${DATA.length}</span></button>`;
+  order.forEach(key => {
+    if(!counts[key]) return;
+    f += `<button class="chip" data-filter="${key}">${THEMES[key].label}<span class="count">${counts[key]}</span></button>`;
+  });
+  filters.innerHTML = f;
+  filters.querySelectorAll(".chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      filters.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      const val = chip.dataset.filter;
+      document.querySelectorAll("[data-section]").forEach(sec => {
+        sec.classList.toggle("hide", val !== "all" && sec.dataset.section !== val);
+      });
+    });
+  });
+
+  // Stats
+  document.getElementById("stat-total").textContent = DATA.length;
+  document.getElementById("stat-video").textContent = DATA.filter(d=>d.type==="video").length;
+  document.getElementById("stat-playlist").textContent = DATA.filter(d=>d.type==="playlist").length;
+
+  // Titres réels (chargés en arrière-plan, sans bloquer l'affichage)
+  const cards = content.querySelectorAll(".card");
+  cards.forEach((card, i) => {
+    const item = DATA[i];
+    fetchTitle(item).then(title => {
+      const el = card.querySelector("[data-title]");
+      if (el) el.textContent = title;
+    });
+  });
+}
+
+render();
+</script>
+</body>
+</html>
