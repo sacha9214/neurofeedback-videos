@@ -5,279 +5,477 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Neurofeedback — Vidéos & Podcasts</title>
 <meta name="description" content="Bibliothèque de vidéos et podcasts sur le neurofeedback, classés par thématique." />
+<meta name="color-scheme" content="dark" />
+<link rel="preconnect" href="https://i.ytimg.com" />
+<link rel="preconnect" href="https://noembed.com" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #0a0e14;
-    --bg-soft: #111722;
-    --card: #151c28;
-    --card-hover: #1b2433;
-    --border: #232c3b;
-    --text: #e8edf4;
-    --muted: #8a97aa;
-    --accent: #5b8cff;
-    --accent-soft: rgba(91, 140, 255, 0.14);
-    --radius: 16px;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    --bg: #070a10;
+    --bg-2: #0a0e15;
+    --card: #0f141d;
+    --card-2: #131a25;
+    --border: #1d2634;
+    --border-2: #2a3547;
+    --text: #eef2f8;
+    --muted: #93a1b5;
+    --muted-2: #6c7a8f;
+    --accent: #6ea0ff;
+    --accent-2: #9d7bff;
+    --accent-3: #46d2c7;
+    --glow: rgba(110, 160, 255, 0.45);
+    --radius: 18px;
+    --radius-sm: 12px;
+    --ease: cubic-bezier(.22, 1, .36, 1);
+    --ease-out: cubic-bezier(.16, 1, .3, 1);
   }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
   }
   a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--accent); color: #04070d; }
+
+  /* Ambient animated background */
+  .ambient {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(60vw 60vw at 18% -8%, rgba(110,160,255,0.16), transparent 60%),
+      radial-gradient(50vw 50vw at 88% 8%, rgba(157,123,255,0.14), transparent 58%),
+      radial-gradient(45vw 45vw at 60% 100%, rgba(70,210,199,0.10), transparent 60%),
+      var(--bg);
+  }
+  .ambient::after {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.022;
+    mix-blend-mode: overlay;
+  }
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(70px);
+    z-index: -1;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .orb.a { width: 460px; height: 460px; top: -160px; left: -120px; background: radial-gradient(circle, rgba(110,160,255,0.5), transparent 70%); animation: float1 18s var(--ease) infinite; }
+  .orb.b { width: 380px; height: 380px; top: -80px; right: -100px; background: radial-gradient(circle, rgba(157,123,255,0.45), transparent 70%); animation: float2 22s var(--ease) infinite; }
+  @keyframes float1 { 50% { transform: translate(60px, 50px) scale(1.1); } }
+  @keyframes float2 { 50% { transform: translate(-50px, 40px) scale(1.08); } }
 
   /* ---------- Hero ---------- */
   .hero {
     position: relative;
-    padding: 72px 24px 48px;
+    padding: 110px 24px 70px;
     text-align: center;
-    background:
-      radial-gradient(1200px 400px at 50% -10%, rgba(91,140,255,0.18), transparent 70%),
-      linear-gradient(180deg, #0c121c, var(--bg));
-    border-bottom: 1px solid var(--border);
-    overflow: hidden;
   }
-  .hero .brain { font-size: 46px; margin-bottom: 14px; }
+  .badge-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    padding: 7px 14px 7px 10px;
+    border: 1px solid var(--border-2);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.02);
+    backdrop-filter: blur(8px);
+    margin-bottom: 30px;
+    opacity: 0;
+    animation: rise 0.8s var(--ease-out) 0.05s forwards;
+  }
+  .badge-top .pulse {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent-3);
+    box-shadow: 0 0 0 0 rgba(70,210,199,0.6);
+    animation: pulse 2.4s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(70,210,199,0.5); }
+    70% { box-shadow: 0 0 0 9px rgba(70,210,199,0); }
+    100% { box-shadow: 0 0 0 0 rgba(70,210,199,0); }
+  }
   .hero h1 {
-    font-size: clamp(28px, 5vw, 46px);
+    font-family: "Sora", "Inter", sans-serif;
+    font-size: clamp(34px, 6.2vw, 68px);
     font-weight: 800;
-    letter-spacing: -0.02em;
-    background: linear-gradient(180deg, #fff, #aebfdc);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    letter-spacing: -0.03em;
+    line-height: 1.04;
+    background: linear-gradient(180deg, #ffffff 30%, #9fb2d4 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    opacity: 0;
+    animation: rise 0.9s var(--ease-out) 0.12s forwards;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(110deg, var(--accent) 0%, var(--accent-2) 55%, var(--accent-3) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .hero p {
     color: var(--muted);
-    max-width: 620px;
-    margin: 14px auto 0;
-    font-size: 16px;
+    max-width: 600px;
+    margin: 22px auto 0;
+    font-size: clamp(15px, 2.2vw, 18px);
+    opacity: 0;
+    animation: rise 0.9s var(--ease-out) 0.22s forwards;
   }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(22px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   .stats {
-    display: flex;
-    gap: 28px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 28px;
+    display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+    margin-top: 44px;
+    opacity: 0;
+    animation: rise 0.9s var(--ease-out) 0.34s forwards;
   }
-  .stat { text-align: center; }
-  .stat b { display: block; font-size: 26px; font-weight: 800; color: var(--text); }
-  .stat span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .stat {
+    min-width: 116px;
+    padding: 18px 22px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.01));
+    backdrop-filter: blur(8px);
+    transition: transform 0.4s var(--ease), border-color 0.4s var(--ease);
+  }
+  .stat:hover { transform: translateY(-3px); border-color: var(--border-2); }
+  .stat b {
+    display: block;
+    font-family: "Sora", sans-serif;
+    font-size: 30px; font-weight: 800;
+    background: linear-gradient(180deg, #fff, #b9c8e4);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat span { font-size: 11.5px; color: var(--muted-2); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+
+  .scroll-hint {
+    margin-top: 56px;
+    display: inline-flex;
+    color: var(--muted-2);
+    opacity: 0;
+    animation: rise 1s var(--ease-out) 0.5s forwards, bob 2.6s ease-in-out 1.4s infinite;
+  }
+  @keyframes bob { 50% { transform: translateY(8px); } }
 
   /* ---------- Layout ---------- */
-  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
 
+  .filters-wrap {
+    position: sticky; top: 0; z-index: 30;
+    padding: 14px 0;
+    background: linear-gradient(180deg, rgba(7,10,16,0.92) 60%, rgba(7,10,16,0));
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
   .filters {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 18px 0;
-    margin-top: 8px;
-    background: rgba(10, 14, 20, 0.82);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
+    display: flex; gap: 9px; flex-wrap: wrap; justify-content: center;
+    max-width: 1180px; margin: 0 auto; padding: 0 24px;
   }
   .chip {
+    position: relative;
     border: 1px solid var(--border);
-    background: var(--bg-soft);
+    background: rgba(255,255,255,0.02);
     color: var(--muted);
-    padding: 8px 16px;
+    padding: 9px 17px;
     border-radius: 999px;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13.5px; font-weight: 600;
     cursor: pointer;
-    transition: all 0.18s ease;
     white-space: nowrap;
+    transition: color 0.3s var(--ease), border-color 0.3s var(--ease), background 0.3s var(--ease), transform 0.2s var(--ease);
   }
-  .chip:hover { color: var(--text); border-color: #34405440; }
+  .chip:hover { color: var(--text); border-color: var(--border-2); transform: translateY(-1px); }
+  .chip:active { transform: translateY(0) scale(0.97); }
   .chip.active {
-    background: var(--accent-soft);
-    border-color: var(--accent);
-    color: #cddbff;
+    color: #06090f;
+    border-color: transparent;
+    background: linear-gradient(110deg, var(--accent), var(--accent-2));
+    box-shadow: 0 6px 22px -8px var(--glow);
   }
   .chip .count {
-    opacity: 0.7;
-    font-weight: 500;
-    margin-left: 4px;
+    margin-left: 5px;
+    opacity: 0.65;
+    font-variant-numeric: tabular-nums;
   }
+  .chip.active .count { opacity: 0.8; }
 
   /* ---------- Sections ---------- */
-  .section { padding: 40px 0 8px; }
-  .section h2 {
-    font-size: 20px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 4px;
+  .section { padding: 54px 0 6px; }
+  .section-head {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 26px;
   }
-  .section .lead { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
-  .section .ico {
-    width: 34px; height: 34px;
+  .section-head .ico {
+    width: 44px; height: 44px;
+    flex: none;
     display: grid; place-items: center;
-    border-radius: 10px;
-    background: var(--accent-soft);
-    font-size: 18px;
+    border-radius: 13px;
+    font-size: 21px;
+    background: linear-gradient(150deg, rgba(110,160,255,0.18), rgba(157,123,255,0.12));
+    border: 1px solid var(--border-2);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .section-head h2 {
+    font-family: "Sora", sans-serif;
+    font-size: clamp(19px, 3vw, 24px);
+    font-weight: 700; letter-spacing: -0.02em;
+  }
+  .section-head .lead { color: var(--muted); font-size: 13.5px; margin-top: 1px; }
+  .section-head .line {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--border-2), transparent);
+    margin-top: 6px;
   }
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 20px;
   }
 
   /* ---------- Card ---------- */
   .card {
-    background: var(--card);
+    position: relative;
+    background: linear-gradient(180deg, var(--card-2), var(--card));
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    display: flex; flex-direction: column;
+    transition: transform 0.5s var(--ease), border-color 0.5s var(--ease), box-shadow 0.5s var(--ease);
+    will-change: transform;
+  }
+  /* gradient ring on hover */
+  .card::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: var(--radius);
+    padding: 1px;
+    background: linear-gradient(140deg, var(--accent), var(--accent-2) 50%, transparent 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: 0; transition: opacity 0.5s var(--ease);
+    pointer-events: none;
   }
   .card:hover {
-    transform: translateY(-4px);
-    border-color: #34405470;
-    box-shadow: var(--shadow);
-    background: var(--card-hover);
+    transform: translateY(-7px);
+    box-shadow: 0 24px 48px -22px rgba(0,0,0,0.85), 0 0 40px -28px var(--glow);
   }
+  .card:hover::before { opacity: 1; }
+
   .thumb {
     position: relative;
     aspect-ratio: 16 / 9;
-    background: linear-gradient(135deg, #1a2233, #0e1420);
     overflow: hidden;
+    background: linear-gradient(135deg, #141c2a, #0b1018);
   }
-  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .thumb::after { /* shimmer skeleton */
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,0.06) 50%, transparent 80%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  .thumb.loaded::after { display: none; }
+  @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+  .thumb img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    opacity: 0; transform: scale(1.06);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  }
+  .thumb img.show { opacity: 1; transform: scale(1); }
+  .card:hover .thumb img.show { transform: scale(1.05); }
+  .thumb .grad-over {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 45%, rgba(7,10,16,0.55) 100%);
+  }
   .thumb .play {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    background: rgba(6, 9, 14, 0.15);
-    opacity: 0;
-    transition: opacity 0.18s ease;
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    opacity: 0; transition: opacity 0.4s var(--ease);
   }
   .card:hover .thumb .play { opacity: 1; }
   .thumb .play span {
-    width: 54px; height: 54px;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.6);
-    border: 2px solid #fff;
+    width: 58px; height: 58px; border-radius: 50%;
+    background: rgba(8,12,18,0.6);
+    border: 1.5px solid rgba(255,255,255,0.85);
     display: grid; place-items: center;
-    color: #fff; font-size: 20px;
-    padding-left: 4px;
+    color: #fff; font-size: 20px; padding-left: 4px;
+    backdrop-filter: blur(6px);
+    transform: scale(0.8);
+    transition: transform 0.45s var(--ease);
   }
+  .card:hover .thumb .play span { transform: scale(1); }
   .badge {
-    position: absolute;
-    top: 10px; left: 10px;
-    background: rgba(0,0,0,0.7);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 4px 9px;
-    border-radius: 999px;
-    backdrop-filter: blur(4px);
+    position: absolute; top: 11px; left: 11px;
+    z-index: 2;
+    font-size: 11px; font-weight: 700;
     letter-spacing: 0.02em;
+    padding: 5px 11px; border-radius: 999px;
+    color: #eaf0ff;
+    background: rgba(8,12,18,0.62);
+    border: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
   }
-  .badge.playlist { background: rgba(91,140,255,0.85); }
+  .badge.playlist {
+    color: #06090f;
+    background: linear-gradient(110deg, var(--accent-3), var(--accent));
+    border-color: transparent;
+  }
+  .badge .dur { opacity: 0.85; }
   .pl-art {
     position: absolute; inset: 0;
     display: grid; place-items: center;
-    color: #7e93ba; font-size: 44px;
+    color: #6f86b3; font-size: 50px;
+    background:
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.018) 0 12px, transparent 12px 24px),
+      linear-gradient(150deg, #16203200, #1a2740);
   }
-  .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .pl-art::after { /* stacked sheets hint */
+    content: "";
+    position: absolute; top: 14px; right: 14px; bottom: 14px; left: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    box-shadow: 6px -6px 0 -1px rgba(255,255,255,0.05), 12px -12px 0 -2px rgba(255,255,255,0.03);
+  }
+
+  .body { padding: 15px 17px 17px; display: flex; flex-direction: column; gap: 7px; flex: 1; }
   .body .title {
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.35;
-    color: var(--text);
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    font-size: 15px; font-weight: 600; line-height: 1.38;
+    letter-spacing: -0.01em;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    min-height: 2.76em;
+    transition: color 0.3s var(--ease);
   }
+  .title.skel {
+    color: transparent;
+    background: linear-gradient(100deg, var(--border) 30%, var(--border-2) 50%, var(--border) 70%);
+    background-size: 200% 100%;
+    border-radius: 6px;
+    animation: shimmer 1.4s infinite;
+    min-height: 1.1em;
+  }
+  .card:hover .body .title { color: #fff; }
   .body .note { font-size: 13px; color: var(--muted); flex: 1; }
   .body .meta {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 12px; color: var(--muted);
-    margin-top: 4px;
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 12px; color: var(--muted-2); font-weight: 500;
+    margin-top: 5px;
   }
-  .body .meta .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--muted); }
+  .body .meta svg { width: 14px; height: 14px; opacity: 0.7; }
+
+  /* reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(26px); }
+  .reveal.in { opacity: 1; transform: none; transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+
+  /* filter transitions */
+  .card.filtering { opacity: 0; transform: scale(0.96); pointer-events: none; }
+  .section.collapsing { display: none; }
 
   footer {
-    text-align: center;
-    color: var(--muted);
-    font-size: 13px;
-    padding: 56px 24px 40px;
+    text-align: center; color: var(--muted-2); font-size: 13px;
+    padding: 80px 24px 56px; margin-top: 60px;
     border-top: 1px solid var(--border);
-    margin-top: 48px;
+    position: relative;
   }
-  footer a { color: var(--accent); }
-  .hide { display: none !important; }
+  footer b { color: var(--muted); }
+  footer .gh {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 18px; padding: 9px 16px;
+    border: 1px solid var(--border-2); border-radius: 999px;
+    color: var(--muted); font-weight: 600; font-size: 13px;
+    transition: all 0.3s var(--ease);
+  }
+  footer .gh:hover { color: var(--text); border-color: var(--accent); transform: translateY(-2px); }
+
+  @media (max-width: 560px) {
+    .hero { padding: 80px 20px 50px; }
+    .grid { grid-template-columns: 1fr; }
+    .stat { min-width: 100px; padding: 14px 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
 </style>
 </head>
 <body>
 
+<div class="ambient"></div>
+<div class="orb a"></div>
+<div class="orb b"></div>
+
 <header class="hero">
-  <div class="brain">🧠</div>
-  <h1>Neurofeedback — Vidéos &amp; Podcasts</h1>
-  <p>Une bibliothèque des vidéos, conférences, podcasts et témoignages partagés autour du neurofeedback, classés par thématique.</p>
+  <span class="badge-top"><span class="pulse"></span>Neurofeedback Family · bibliothèque</span>
+  <h1>Vidéos &amp; podcasts<br /><span class="grad">sur le neurofeedback</span></h1>
+  <p>Conférences, podcasts et témoignages réunis et classés par thématique — pour explorer la pratique en un coup d'œil.</p>
   <div class="stats">
-    <div class="stat"><b id="stat-total">0</b><span>ressources</span></div>
-    <div class="stat"><b id="stat-video">0</b><span>vidéos</span></div>
-    <div class="stat"><b id="stat-playlist">0</b><span>playlists</span></div>
+    <div class="stat"><b id="stat-total">0</b><span>Ressources</span></div>
+    <div class="stat"><b id="stat-video">0</b><span>Vidéos</span></div>
+    <div class="stat"><b id="stat-playlist">0</b><span>Playlists</span></div>
+    <div class="stat"><b id="stat-theme">5</b><span>Thématiques</span></div>
+  </div>
+  <div class="scroll-hint" aria-hidden="true">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
   </div>
 </header>
 
-<div class="wrap">
+<div class="filters-wrap">
   <nav class="filters" id="filters"></nav>
-  <main id="content"></main>
 </div>
 
+<div class="wrap"><main id="content"></main></div>
+
 <footer>
-  Bibliothèque construite à partir des partages du groupe <b>Neurofeedback Family</b>.<br />
+  Construit à partir des partages du groupe <b>Neurofeedback Family</b>.<br />
   Les vidéos restent hébergées sur YouTube — ce site ne fait que les organiser.
+  <br />
+  <a class="gh" href="https://github.com/sacha9214/neurofeedback-videos" target="_blank" rel="noopener">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
+    Voir le code sur GitHub
+  </a>
 </footer>
 
 <script>
 /* ----------------------------------------------------------------------
-   Données : chaque ressource extraite du chat WhatsApp.
-   theme = clé de thématique ; note = description issue du chat.
+   Données extraites du chat WhatsApp. theme = thématique ; note = contexte.
 ---------------------------------------------------------------------- */
 const THEMES = {
-  decouverte: { label: "Découvrir", icon: "✨", title: "Découvrir le neurofeedback", lead: "Pour comprendre de quoi il s’agit et faire découvrir la pratique." },
-  conferences:{ label: "Conférences & Webinaires", icon: "🎤", title: "Conférences & Webinaires", lead: "Interventions, conférences et replays de webinaires." },
-  podcasts:   { label: "Podcasts", icon: "🎧", title: "Podcasts", lead: "Échanges audio thématiques : sommeil, bonheur, fonctionnement du cerveau." },
-  temoignages:{ label: "Témoignages", icon: "💬", title: "Témoignages", lead: "Retours et témoignages de patients sur leur expérience." },
+  decouverte: { label: "Découvrir", icon: "✨", title: "Découvrir le neurofeedback", lead: "Pour comprendre la pratique et la faire découvrir." },
+  conferences:{ label: "Conférences", icon: "🎤", title: "Conférences & Webinaires", lead: "Interventions, conférences et replays de webinaires." },
+  podcasts:   { label: "Podcasts", icon: "🎧", title: "Podcasts", lead: "Sommeil, bonheur, fonctionnement du cerveau." },
+  temoignages:{ label: "Témoignages", icon: "💬", title: "Témoignages", lead: "Retours et expériences de patients." },
   playlists:  { label: "Playlists", icon: "📚", title: "Playlists complètes", lead: "Collections regroupant plusieurs vidéos." },
 };
 
 const DATA = [
-  // --- Découvrir ---
   { type:"video", id:"HyLd46df9yU", theme:"decouverte", note:"« La vidéo préférée pour faire découvrir le neurofeedback aux personnes qui ne connaissent pas. »" },
   { type:"video", id:"5cJWXBGXPA8", theme:"decouverte", note:"La toute première vidéo de Perrine, avant de devenir formatrice." },
 
-  // --- Conférences & Webinaires ---
   { type:"video", id:"rCfl9svj8QE", theme:"conferences", note:"Conférence donnée en entreprise." },
   { type:"video", id:"5CbPjkqU7XA", theme:"conferences", note:"Conférence diffusée en direct (live)." },
 
-  // --- Podcasts ---
   { type:"video", id:"Gpi9OusUtV0", theme:"podcasts", note:"Podcast sur le bonheur, avec Julien Peron." },
-  { type:"video", id:"TwVMFPzRyu8", theme:"podcasts", note:"Podcast dédié au sommeil — chaîne « Les Impactantes » de Barbara Dellenbach." },
+  { type:"video", id:"TwVMFPzRyu8", theme:"podcasts", note:"Podcast dédié au sommeil — « Les Impactantes » de Barbara Dellenbach." },
   { type:"video", id:"F5m0xLvxOCk", theme:"podcasts", note:"Mini podcast : pourquoi les coupures du son font sens pour le cerveau." },
 
-  // --- Témoignages ---
   { type:"video", id:"YCSf4NJH858", theme:"temoignages", note:"Des patients témoignent — chaîne YouTube de NeurOptimal." },
-  { type:"video", id:"vkzGhkxLSaA", theme:"temoignages", note:"Témoignage poignant d’une patiente." },
+  { type:"video", id:"vkzGhkxLSaA", theme:"temoignages", note:"Témoignage poignant d'une patiente." },
   { type:"video", id:"LeX_dZIVrS0", theme:"temoignages", note:"Témoignage." },
   { type:"video", id:"lcP640t69nI", theme:"temoignages", note:"Témoignage — chaîne de Jean-Philippe Dellamonica." },
   { type:"video", id:"Zs3Wgz89LVE", theme:"temoignages", note:"Témoignage — chaîne de Jean-Philippe Dellamonica." },
@@ -286,84 +484,82 @@ const DATA = [
   { type:"video", id:"AlXUJdP4CTU", theme:"temoignages", note:"Témoignage — chaîne de Jean-Philippe Dellamonica." },
   { type:"video", id:"BDeF51MjVwo", theme:"temoignages", note:"Témoignage — chaîne de Jean-Philippe Dellamonica." },
 
-  // --- Playlists ---
   { type:"playlist", id:"PLfKOOpTKVqFZPiq-aibQox6DBjkDAARVi", theme:"playlists", note:"Replays des webinaires de la Semaine du Cerveau." },
   { type:"playlist", id:"PLyjHSx2GW2LRaah9TMPU7Qskec2S9tPHw", theme:"playlists", note:"Playlist de vidéos neurofeedback." },
   { type:"playlist", id:"PLmVDcyNU4LA6_qEe2a4u3Wc88_m3nwrSf", theme:"playlists", note:"Playlist de vidéos neurofeedback." },
 ];
 
-/* ---------- Helpers ---------- */
+const ORDER = ["decouverte","conferences","podcasts","temoignages","playlists"];
 const ytWatch    = id => `https://www.youtube.com/watch?v=${id}`;
 const ytPlaylist = id => `https://www.youtube.com/playlist?list=${id}`;
 const ytThumb    = id => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 
 function fallbackTitle(item){
-  const map = { decouverte:"Vidéo découverte", conferences:"Conférence", podcasts:"Podcast", temoignages:"Témoignage", playlists:"Playlist" };
-  return map[item.theme] || "Vidéo";
+  return ({ decouverte:"Vidéo découverte", conferences:"Conférence", podcasts:"Podcast", temoignages:"Témoignage", playlists:"Playlist" })[item.theme] || "Vidéo";
 }
 
-/* Récupère le vrai titre YouTube via noembed (CORS-friendly), avec repli. */
 async function fetchTitle(item){
   const url = item.type === "playlist" ? ytPlaylist(item.id) : ytWatch(item.id);
   try {
     const r = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
     const j = await r.json();
     if (j && j.title) return j.title;
-  } catch(e){ /* offline / blocked → repli */ }
-  return fallbackTitle(item);
+  } catch(e){}
+  return null;
 }
 
-function cardHTML(item){
+const videoIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8z"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>`;
+const plIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h13M3 12h9M3 18h9M17 12l5 3-5 3v-6z"/></svg>`;
+
+function cardHTML(item, idx){
   const href = item.type === "playlist" ? ytPlaylist(item.id) : ytWatch(item.id);
   const isPl = item.type === "playlist";
   const thumb = isPl
     ? `<div class="pl-art">📚</div>`
-    : `<img loading="lazy" src="${ytThumb(item.id)}" alt="" onerror="this.style.display='none'">`;
+    : `<img alt="" data-src="${ytThumb(item.id)}">`;
   const badge = isPl
     ? `<span class="badge playlist">Playlist</span>`
     : `<span class="badge">${THEMES[item.theme].label}</span>`;
   return `
-  <a class="card" data-theme="${item.theme}" href="${href}" target="_blank" rel="noopener">
-    <div class="thumb">
+  <a class="card reveal" data-theme="${item.theme}" data-idx="${idx}" href="${href}" target="_blank" rel="noopener" style="transition-delay:${(idx%3)*60}ms">
+    <div class="thumb ${isPl?'loaded':''}">
       ${thumb}
+      <div class="grad-over"></div>
       ${badge}
       <div class="play"><span>▶</span></div>
     </div>
     <div class="body">
-      <div class="title" data-title>${fallbackTitle(item)}</div>
+      <div class="title skel" data-title>&nbsp;</div>
       <div class="note">${item.note}</div>
-      <div class="meta">${isPl ? "Playlist YouTube" : "Vidéo YouTube"}</div>
+      <div class="meta">${isPl?plIcon:videoIcon}${isPl?"Playlist YouTube":"Vidéo YouTube"}</div>
     </div>
   </a>`;
 }
 
-/* ---------- Render ---------- */
 function render(){
   const content = document.getElementById("content");
-  const order = ["decouverte","conferences","podcasts","temoignages","playlists"];
-  let html = "";
-  order.forEach(key => {
+  let html = "", idx = 0;
+  ORDER.forEach(key => {
     const items = DATA.filter(d => d.theme === key);
     if (!items.length) return;
     const t = THEMES[key];
     html += `
     <section class="section" data-section="${key}">
-      <h2><span class="ico">${t.icon}</span>${t.title}</h2>
-      <p class="lead">${t.lead}</p>
-      <div class="grid">${items.map(cardHTML).join("")}</div>
+      <div class="section-head reveal">
+        <span class="ico">${t.icon}</span>
+        <div><h2>${t.title}</h2><div class="lead">${t.lead}</div></div>
+        <span class="line"></span>
+      </div>
+      <div class="grid">${items.map(it => cardHTML(it, idx++)).join("")}</div>
     </section>`;
   });
   content.innerHTML = html;
 
-  // Filtres
-  const counts = {};
-  DATA.forEach(d => counts[d.theme] = (counts[d.theme]||0)+1);
+  // Filters
+  const counts = {}; DATA.forEach(d => counts[d.theme] = (counts[d.theme]||0)+1);
   const filters = document.getElementById("filters");
   let f = `<button class="chip active" data-filter="all">Tout<span class="count">${DATA.length}</span></button>`;
-  order.forEach(key => {
-    if(!counts[key]) return;
-    f += `<button class="chip" data-filter="${key}">${THEMES[key].label}<span class="count">${counts[key]}</span></button>`;
-  });
+  ORDER.forEach(key => { if(counts[key]) f += `<button class="chip" data-filter="${key}">${THEMES[key].icon} ${THEMES[key].label}<span class="count">${counts[key]}</span></button>`; });
   filters.innerHTML = f;
   filters.querySelectorAll(".chip").forEach(chip => {
     chip.addEventListener("click", () => {
@@ -371,25 +567,56 @@ function render(){
       chip.classList.add("active");
       const val = chip.dataset.filter;
       document.querySelectorAll("[data-section]").forEach(sec => {
-        sec.classList.toggle("hide", val !== "all" && sec.dataset.section !== val);
+        sec.classList.toggle("collapsing", val !== "all" && sec.dataset.section !== val);
       });
     });
   });
 
-  // Stats
-  document.getElementById("stat-total").textContent = DATA.length;
-  document.getElementById("stat-video").textContent = DATA.filter(d=>d.type==="video").length;
-  document.getElementById("stat-playlist").textContent = DATA.filter(d=>d.type==="playlist").length;
+  // Stats count-up
+  animateCount("stat-total", DATA.length);
+  animateCount("stat-video", DATA.filter(d=>d.type==="video").length);
+  animateCount("stat-playlist", DATA.filter(d=>d.type==="playlist").length);
 
-  // Titres réels (chargés en arrière-plan, sans bloquer l'affichage)
-  const cards = content.querySelectorAll(".card");
-  cards.forEach((card, i) => {
-    const item = DATA[i];
+  // Lazy thumbnails with fade-in
+  const imgObs = new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const img = e.target;
+      img.src = img.dataset.src;
+      img.addEventListener("load", () => { img.classList.add("show"); img.closest(".thumb").classList.add("loaded"); });
+      img.addEventListener("error", () => { img.closest(".thumb").classList.add("loaded"); });
+      obs.unobserve(img);
+    });
+  }, { rootMargin: "200px" });
+  content.querySelectorAll("img[data-src]").forEach(img => imgObs.observe(img));
+
+  // Reveal on scroll
+  const revObs = new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); obs.unobserve(e.target); } });
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+  content.querySelectorAll(".reveal").forEach(el => revObs.observe(el));
+
+  // Real titles
+  content.querySelectorAll(".card").forEach(card => {
+    const item = DATA[+card.dataset.idx];
+    const el = card.querySelector("[data-title]");
     fetchTitle(item).then(title => {
-      const el = card.querySelector("[data-title]");
-      if (el) el.textContent = title;
+      el.classList.remove("skel");
+      el.textContent = title || fallbackTitle(item);
     });
   });
+}
+
+function animateCount(id, target){
+  const el = document.getElementById(id);
+  const dur = 900, t0 = performance.now();
+  function step(t){
+    const p = Math.min(1, (t - t0) / dur);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(eased * target);
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
 }
 
 render();
